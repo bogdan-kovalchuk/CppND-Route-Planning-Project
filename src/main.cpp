@@ -49,13 +49,18 @@ int main(int argc, const char **argv) {
             osm_data = std::move(*data);
     }
 
+//    float start_x = 0;
+//    float start_y = 0;
+//    float end_x = 0;
+//    float end_y = 0;
+//
+//    std::cout << "Enter start and end coordinates - start_x, start_y, end_x, end_y: " << std::endl;
+//    std::cin >> start_x >> start_y >> end_x >> end_y;
+
     float start_x = 0;
     float start_y = 0;
-    float end_x = 0;
-    float end_y = 0;
-
-    std::cout << "Enter start and end coordinates - start_x, start_y, end_x, end_y: " << std::endl;
-    std::cin >> start_x >> start_y >> end_x >> end_y;
+    float end_x = 90;
+    float end_y = 90;
 
     // Build Model.
     RouteModel model{osm_data};
