@@ -28,7 +28,7 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 // TODO 4: Complete the AddNeighbors method to expand the current node by adding all unvisited neighbors to the open list.
 // Tips:
 // - Use the FindNeighbors() method of the current_node to populate current_node.neighbors vector with all the neighbors.
-// - For each node in current_node.neighbors, set the parent, the h_value, the g_value. 
+// - For each node in current_node.neighbors, set the parent, the h_value, the g_value.
 // - Use CalculateHValue below to implement the h-Value calculation.
 // - For each node in current_node.neighbors, add the neighbor to open_list and set the node's visited attribute to true.
 
@@ -37,7 +37,7 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
     for (auto node : current_node->neighbors) {
         node->parent = current_node;
         node->h_value = CalculateHValue(node);
-        node->g_value = 0;
+        node->g_value = current_node->g_value + current_node->distance(*node);
         node->visited = true;
         open_list.push_back(node);
     }
@@ -58,9 +58,7 @@ bool Compare(const RouteModel::Node *a, RouteModel::Node *b) {
 
 RouteModel::Node *RoutePlanner::NextNode() {
     RouteModel::Node *current = nullptr;
-    if (open_list.size() > 1) {
-        sort(open_list.begin(), open_list.end(), Compare);
-    }
+    sort(open_list.begin(), open_list.end(), Compare);
     current = open_list.back();
     open_list.pop_back();
     return current;
@@ -98,8 +96,9 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 // - Store the final path in the m_Model.path attribute before the method exits. This path will then be displayed on the map tile.
 
 void RoutePlanner::AStarSearch() {
-    RouteModel::Node *current_node = start_node;
-    AddNeighbors(current_node);
+    RouteModel::Node *current_node = nullptr;
+    start_node->visited = true;
+    open_list.push_back(start_node);
     while (!open_list.empty()) {
         // Get the next node
         current_node = NextNode();
